@@ -28,5 +28,6 @@ execute (UnaryNode op tree) =
     in case op of
          Plus  -> x
          Minus -> -x
+         Log -> log x
 
 execute (NumNode x) = x
