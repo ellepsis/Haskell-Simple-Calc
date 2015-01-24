@@ -2,7 +2,6 @@ module Executor where
 
 import Parser
 import Tokenizer
-import qualified Data.Map as M
 
 execute :: CalcTree -> Double
 
