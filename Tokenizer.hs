@@ -14,11 +14,11 @@ data Token = TokOp Operator
     deriving (Show, Eq)
 
 operator :: Char -> Operator
-operator c | c == '+' = Plus
-           | c == '-' = Minus
-           | c == '*' = Mul
-           | c == '/' = Div
-           | c == '^' = Pow
+operator '+' = Plus
+operator '-' = Minus
+operator '*' = Mul
+operator '/' = Div
+operator '^' = Pow
 
 tokenize :: String -> [Token]
 tokenize [] = []

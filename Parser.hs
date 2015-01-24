@@ -9,8 +9,7 @@ import Tokenizer
 -- 4. Minus (-)
 -- 5. Plus (+)
 
-data CalcTree = SumNode Operator CalcTree CalcTree
-          | ProductNode Operator CalcTree CalcTree
+data CalcTree = BinNode Operator CalcTree CalcTree
           | UnaryNode Operator CalcTree
           | NumNode Double
   deriving Show
@@ -38,7 +37,7 @@ expression tokens =
         -- Term [+]
         (TokOp op) | op == Plus -> 
             let (exTree, tokens'') = expression (accept tokens') 
-            in (SumNode op termTree exTree, tokens'')
+            in (BinNode op termTree exTree, tokens'')
         _ -> (termTree, tokens')
 
 expressionMinus :: [Token] -> (CalcTree, [Token])
@@ -49,7 +48,7 @@ expressionMinus tokens =
         -- Term [-]
         (TokOp op) | op == Minus -> 
             let (exTree, tokens'') = expressionMinus (accept tokens') 
-            in (SumNode op termTree exTree, tokens'')
+            in (BinNode op termTree exTree, tokens'')
         _ -> (termTree, tokens')
 
 term :: [Token] -> (CalcTree, [Token])
@@ -60,7 +59,7 @@ term tokens =
         -- Term [*/]
         (TokOp op) | elem op [Mul, Div] ->
             let (termTree, tokens'') = term (accept tokens') 
-            in (ProductNode op facTree termTree, tokens'')
+            in (BinNode op facTree termTree, tokens'')
         _ -> (facTree, tokens')
 
 termPow :: [Token] -> (CalcTree, [Token])
@@ -71,7 +70,7 @@ termPow tokens =
         -- Term [^]
         (TokOp op) | op == Pow ->
             let (termTree, tokens'') = termPow (accept tokens') 
-            in (ProductNode op facTree termTree, tokens'')
+            in (BinNode op facTree termTree, tokens'')
         _ -> (facTree, tokens')
 
 factor :: [Token] -> (CalcTree, [Token])
